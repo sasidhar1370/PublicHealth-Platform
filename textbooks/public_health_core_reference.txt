@@ -1,0 +1,149 @@
+# PUBLIC HEALTH CORE COMPETENCIES REFERENCE MANUAL
+# Comprehensive Foundational Curriculum for Board Examination and Practice
+
+================================================================================
+SECTION 1: EPIDEMIOLOGY (Principles, Metrics, and Outbreak Investigation)
+================================================================================
+
+1.1 Measures of Disease Frequency
+- Incidence Proportion (Cumulative Incidence): The probability that an individual will develop a disease over a specified time period. Calculated as: (Number of new cases during time period) / (Number of disease-free individuals at start of period).
+- Incidence Rate (Incidence Density): True rate measuring disease occurrence per unit of person-time. Calculated as: (Number of new cases) / (Total person-time at risk during observation period).
+- Prevalence: Point prevalence represents the proportion of a population with a condition at a discrete time point: (Existing cases) / (Total population). Period prevalence measures cases existing at any point over an interval.
+- Mathematical Relationship: In a steady-state population with low disease incidence: Prevalence ≈ (Incidence Rate) × (Average Duration of Disease).
+
+1.2 Measures of Association and Impact
+- Risk Ratio (Relative Risk, RR): Used predominantly in prospective cohort studies and randomized trials. RR = [a / (a + b)] / [c / (c + d)].
+  * RR = 1.0: Null association (no difference in risk between exposed and unexposed).
+  * RR > 1.0: Exposure is associated with increased risk of disease.
+  * RR < 1.0: Exposure is associated with decreased risk (protective factor).
+- Odds Ratio (OR): Primarily calculated in case-control studies. OR = (a * d) / (b * c). Under the "rare disease assumption" (disease incidence < 5-10% in the population), the Odds Ratio closely approximates the Relative Risk.
+- Attack Rate (AR): A cumulative incidence proportion applied to an outbreak or epidemic over a limited period: (Number of ill persons) / (Number of exposed persons at risk). Attack Rate Ratio (ARR) compares attack rates between exposed and unexposed cohorts.
+- Risk Difference (Attributable Risk, AR): Absolute excess risk attributable to exposure: AR = Risk_exposed - Risk_unexposed.
+- Attributable Proportion (Etiologic Fraction in Exposed): [ (Risk_exposed - Risk_unexposed) / Risk_exposed ] × 100% = [ (RR - 1) / RR ] × 100%.
+
+1.3 Confounding versus Effect Modification
+- Confounder: A variable associated with both the exposure and the outcome, but not on the causal pathway between exposure and outcome. Identified when the crude measure of association differs substantially (typically by > 10%) from the stratum-specific adjusted measures, while stratum-specific measures remain homogeneous. Mitigated via randomization, restriction, matching, stratification (Mantel-Haenszel), or multivariable regression.
+- Effect Modification (Interaction): Occurs when the magnitude of the exposure-disease association differs across strata of a third biological or demographic variable. Stratum-specific estimates are heterogeneous. Effect modification is a biological reality to be described and reported, NOT a bias to be eliminated or controlled.
+
+1.4 Outbreak Investigation Protocol (CDC 10-Step Framework)
+1. Prepare for field work.
+2. Establish the existence of an outbreak (observed cases significantly exceed baseline expected surveillance threshold).
+3. Verify the clinical and laboratory diagnosis.
+4. Construct a working case definition (clinical criteria, time boundaries, place/geographic limits, person characteristics; categorized as Confirmed, Probable, Suspect).
+5. Find cases systematically and record information on a standardized line listing.
+6. Perform descriptive epidemiology (person, place, time; construct epidemic curves to determine point source, continuous common source, or propagated transmission).
+7. Develop and evaluate causal hypotheses (using analytical case-control or cohort studies).
+8. Refine hypotheses and execute environmental/traceback laboratory investigations.
+9. Implement targeted control and prevention measures immediately once source is identified.
+10. Communicate findings through official Incident Command reports and public health advisories.
+
+
+================================================================================
+SECTION 2: BIOSTATISTICS (Inferential Methods, Modeling, and Survival Analysis)
+================================================================================
+
+2.1 Hypothesis Testing and Error Taxonomy
+- Null Hypothesis (H0): Statement of no effect, no difference, or no association in the target population (e.g., μ1 = μ2 or OR = 1.0).
+- Alternative Hypothesis (H1 or Ha): Statement that a true difference or association exists.
+- Type I Error (Alpha, α): Rejecting the null hypothesis when H0 is true (False Positive). Alpha is typically set a priori at 0.05.
+- Type II Error (Beta, β): Failing to reject the null hypothesis when H0 is false (False Negative).
+- Statistical Power: Probability of correctly rejecting a false null hypothesis: Power = 1 - β. Standard target is ≥ 0.80 (80%).
+- P-value: Probability of observing a test statistic as extreme as or more extreme than the observed sample statistic, assuming the null hypothesis is true.
+- Confidence Intervals (95% CI): Range of values within which the true population parameter is expected to fall with 95% confidence. If a 95% CI for a difference includes 0, or for a ratio (RR, OR) includes 1.0, the finding is not statistically significant at α = 0.05.
+
+2.2 Parametric versus Non-Parametric Tests
+- Two-Sample Independent Student's t-test: Compares means of a continuous, normally distributed variable across two independent groups (H0: μ1 = μ2). Welch's t-test is used when group variances are unequal.
+- Paired t-test: Compares means of continuous paired/repeated measurements on the same subjects (before vs. after).
+- One-Way Analysis of Variance (ANOVA): Compares continuous means across 3 or more independent groups (H0: μ1 = μ2 = μ3 ...). Followed by post-hoc pairwise tests (e.g., Tukey HSD).
+- Chi-Square Test of Independence (χ²): Compares frequencies/proportions of categorical variables in contingency tables (expected cell counts must be ≥ 5).
+- Fisher's Exact Test: Exact non-parametric test for 2x2 contingency tables when small expected frequencies (< 5) invalidate the asymptotic Chi-Square approximation.
+- Mann-Whitney U / Wilcoxon Rank-Sum Test: Non-parametric alternative to independent two-sample t-test for skewed continuous or ordinal data.
+- Kruskal-Wallis Test: Non-parametric alternative to one-way ANOVA for 3 or more groups.
+
+2.3 Regression Modeling and Survival Analysis
+- Linear Regression: Models continuous outcome Y as linear function of predictors X: Y = β0 + β1*X1 + ... + ε.
+- Multivariable Logistic Regression: Models log-odds of a binary categorical outcome: ln[p / (1 - p)] = β0 + β1*X1 + ... + βk*Xk. Exponentiated coefficients (e^β) represent adjusted Odds Ratios.
+- Kaplan-Meier Estimator: Non-parametric product-limit method to estimate survival function S(t) over time, accommodating right-censored data. Difference between survival curves evaluated using the Log-Rank test.
+- Cox Proportional Hazards Model: Semi-parametric regression modeling time-to-event outcomes. Hazard Ratio (HR = e^β) represents relative instantaneous rate of event occurrence assuming proportional hazards over time.
+
+
+================================================================================
+SECTION 3: RESEARCH METHODS (Study Architecture, Validity, and Bias Taxonomy)
+================================================================================
+
+3.1 Study Design Hierarchy
+- Randomized Controlled Trials (RCTs): Gold standard for causal efficacy. Random allocation balances both measured and unmeasured confounders. Blinding (single, double, triple) prevents performance and ascertainment biases.
+- Prospective Cohort Studies: Follows exposed and unexposed cohorts forward in time to measure incidence rates and relative risk. Preserves temporal sequence. Prone to attrition/loss-to-follow-up bias.
+- Case-Control Studies: Retrospectively compares exposure history between diseased cases and healthy controls. Optimal for rare diseases or long latency periods. Generates Odds Ratios.
+- Cross-Sectional Studies: Assesses exposure and disease status simultaneously at a single point in time. Measures prevalence; cannot establish temporal precedence.
+- Ecological Studies: Units of analysis are entire populations or geographic aggregates rather than individuals. Prone to "Ecological Fallacy" (inferring individual-level associations from aggregate group-level statistics).
+
+3.2 Systematic Bias Taxonomy
+- Selection Bias: Systematic error arising from procedures used to recruit subjects or factors influencing study participation.
+  * Berkson's Bias (Hospital Admission Bias): Spurious association created when cases and controls are selected from hospitalized populations with differential admission rates for exposure and disease combinations.
+  * Healthy Worker Effect: Occupational cohorts exhibit lower overall mortality than the general public because individuals with severe disease are excluded from employment.
+  * Loss to Follow-Up / Attrition Bias: Differential dropout rate between study arms in prospective cohort studies.
+- Information (Measurement) Bias: Systematic error in measurement or classification of exposure or outcome.
+  * Recall Bias: Differential recollection of past exposures between cases and controls. Mitigated by using objective employer records, birth registries, or diseased control groups.
+  * Interviewer / Observer Bias: Systematic difference in recording data based on prior knowledge of subject's disease or exposure status. Prevented via double-blinding.
+  * Misclassification Bias: Non-differential (random error biasing effect toward the null) vs. Differential (systematic error biasing effect either toward or away from the null).
+- Confounding by Indication: Systematic error in observational comparative effectiveness studies where severity of patient condition dictates treatment choice.
+
+
+================================================================================
+SECTION 4: ENVIRONMENTAL HEALTH (Toxicology, Disinfection, Standards, and Occupational Hazards)
+================================================================================
+
+4.1 Water Quality & Disinfection Byproducts (DBPs)
+- Trihalomethanes (THMs: Chloroform, Bromodichloromethane, Dibromochloromethane, Bromoform) and Haloacetic Acids (HAAs): Halogenated byproducts formed when chlorine disinfectants react with natural organic matter (NOM; humic/fulvic acids) in source water.
+- Health Risks: Chronic exposure to elevated THMs (> 80 μg/L MCL) is toxicologically and epidemiologically linked to elevated risks of urinary bladder cancer, colorectal malignancies, and adverse reproductive outcomes.
+- Public Health Engineering Interventions: Enhanced coagulation, granular activated carbon (GAC) filtration, membrane nanofiltration to remove organic precursors prior to chlorination, moving chemical dosing points post-filtration, or employing secondary monochloramine/ultraviolet (UV) treatment.
+- Microbial Pathogens: Cryptosporidium parvum oocysts and Giardia lamblia cysts are resistant to standard chlorination and require physical filtration (coagulation, flocculation, rapid sand, or membrane filters) or UV disinfection.
+
+4.2 Heavy Metals & Lead and Copper Rule (LCR)
+- Lead (Pb): Potent neurotoxin with NO safe blood lead level in children. Inhibits heme synthesis (inhibiting delta-aminolevulinic acid dehydratase, ALAD), impairs neurological synaptic development, reduces IQ, and drives behavioral disorders.
+- Primary Exposure Route: Leaching from lead service lines, lead solder, and brass fixtures due to corrosive water chemistry.
+- Control Measures: Chemical corrosion control via dosing orthophosphate inhibitors (forming insoluble lead phosphate passivation coatings on pipe interiors) and mandatory full service line replacements.
+
+4.3 Air Quality & Criteria Pollutants (EPA NAAQS & WHO Air Guidelines)
+- Particulate Matter (PM2.5 and PM10): Fine particles ≤ 2.5 μm penetrate deep into alveolar spaces and enter systemic circulation, triggering endothelial dysfunction, systemic inflammation, atherosclerosis, myocardial infarction, and chronic obstructive pulmonary disease (COPD).
+- Ground-Level Ozone (O3): Secondary photochemical pollutant formed by reaction of nitrogen oxides (NOx) and volatile organic compounds (VOCs) in the presence of sunlight. Induces respiratory inflammation and bronchoconstriction.
+
+
+================================================================================
+SECTION 5: HEALTH PROGRAM MANAGEMENT (Logic Models, Evaluation Science, and Operations)
+================================================================================
+
+5.1 Logic Model Taxonomy (CDC Framework)
+- Inputs: Financial, human, structural, and material resources dedicated to a program (e.g., funding grants, trained staff, clinical facilities, software).
+- Activities: Specific operational actions, treatments, workshops, or services delivered by the program staff (e.g., conducting 16 diabetes education sessions, administering vaccines).
+- Outputs: Direct, tangible, quantifiable products and participation deliverables resulting from activities (e.g., 400 prediabetic patients completing training, 1,200 educational brochures distributed).
+- Outcomes: Specific measurable changes in attitudes, knowledge, behaviors, clinical parameters, or health status resulting from outputs:
+  * Short-Term Outcomes: Changes in awareness, knowledge, attitudes, or skills (e.g., increased dietary literacy).
+  * Intermediate Outcomes: Modifications in health behaviors, lifestyle habits, or clinical surrogate biomarkers (e.g., sustained physical activity, 5-7% weight loss, HbA1c reduction).
+  * Long-Term Outcomes (Impact): Macro-level population shifts in disease incidence, morbidity, mortality, health equity, and healthcare economic burden.
+
+5.2 Program Evaluation Types
+- Formative Evaluation: Conducted during program design and pre-testing to assess feasibility, cultural appropriateness, and community needs.
+- Process Evaluation: Monitors operational implementation fidelity, reach, dose delivered, and participant satisfaction to verify program is executed as intended.
+- Outcome / Summative Evaluation: Measures programmatic effectiveness and attributable clinical/behavioral change using experimental or quasi-experimental designs.
+- Economic Evaluation: Cost-Effectiveness Analysis (CEA, cost per life-year gained or QALY), Cost-Benefit Analysis (CBA, monetized returns), and Cost-Utility Analysis (CUA, cost per DALY averted).
+
+
+================================================================================
+SECTION 6: PROFESSIONAL COMMUNICATION & RISK MESSAGING
+================================================================================
+
+6.1 CDC Crisis and Emergency Risk Communication (CERC) Framework
+The CERC framework guides public health leaders during emerging outbreaks, biohazards, and environmental emergencies through six cardinal principles:
+1. Be First: Crises are time-sensitive. Providing accurate preliminary information first establishes authority and fills information voids before rumors propagate.
+2. Be Right: Ensure scientific accuracy, outline what is verified, admit what is unknown, and clarify ongoing investigative steps.
+3. Be Credible: Honesty and truthfulness build enduring public trust. Never provide false reassurance or minimize potential risks.
+4. Express Empathy: Acknowledge community suffering, anxiety, and grief genuinely. Empathy builds emotional connection and enhances compliance with health advisories.
+5. Promote Action: Give the public clear, simple, practical action steps (e.g., boil-water advisories, hand hygiene protocols) to restore a sense of personal control.
+6. Show Respect: Communicate with dignity, avoid condescending language, and respect cultural and community diversity.
+
+6.2 Message Mapping Architecture
+- Lead with 3 Key Core Messages: Concise statements of no more than 27 words or 9 seconds each.
+- Supporting Proof Points: 2 to 3 factual data points or scientific rationale supporting each core message.
+- Plain Language & Health Literacy: Translate epidemiological metrics (e.g., confidence intervals, odds ratios) into accessible 6th-to-8th grade reading level directives without diluting technical integrity.

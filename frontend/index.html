@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Public Health Competency Assessment & Learning Platform - Professional competencies, outbreak simulations, and readiness analytics.">
+    <title>Public Health Competency Assessment &amp; Learning Platform</title>
+    <!-- Modern High-Legibility Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 0. Dual-Entry Authentication Gate Screen Modal -->
+    <div id="candidate-auth-modal" class="auth-modal-overlay">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-badge">COMPETENCY ASSESSMENT GATEWAY</div>
+                <h2 class="auth-title">Public Health Competency Assessment &amp; Learning Platform</h2>
+                <p class="auth-subtitle">Integrated Professional Practice &amp; Competency Assessment Portal</p>
+            </div>
+
+            <!-- Role Selector Segmented Tabs -->
+            <div class="auth-role-segmented">
+                <button type="button" class="auth-role-tab active" id="auth-tab-candidate" data-role="candidate">
+                    <span class="auth-tab-label">Candidate / Student</span>
+                </button>
+                <button type="button" class="auth-role-tab" id="auth-tab-admin" data-role="admin">
+                    <span class="auth-tab-label">Faculty &amp; Administrator</span>
+                </button>
+            </div>
+
+            <!-- Tab 1: Candidate / Student Assessment Entry -->
+            <form id="candidate-auth-form" class="auth-form" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="input-candidate-name" class="form-label">Candidate Full Name</label>
+                    <input type="text" id="input-candidate-name" class="form-input" placeholder="e.g. Alex Johnson" value="Alex Johnson" required autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="input-candidate-id" class="form-label">Candidate / Student ID</label>
+                    <input type="text" id="input-candidate-id" class="form-input font-mono" placeholder="e.g. CPH-2026-8841" value="CPH-2026-8841" required autocomplete="off">
+                </div>
+
+                <div class="form-group terms-group">
+                    <label class="terms-checkbox-label" for="terms-agree">
+                        <input type="checkbox" id="terms-agree" required>
+                        <span class="terms-text">I agree to complete this assessment independently according to competency assessment guidelines.</span>
+                    </label>
+                </div>
+
+                <button type="submit" id="btn-candidate-login" class="btn btn-primary btn-block btn-lg" disabled>
+                    <span class="btn-text">Enter Assessment Portal</span>
+                </button>
+            </form>
+
+            <!-- Tab 2: Faculty & Administrator Portal -->
+            <form id="admin-auth-form" class="auth-form" style="display: none;" onsubmit="return false;">
+                <div class="admin-auth-info-banner">
+                    <span class="admin-banner-title">Faculty &amp; Administrator Portal</span>
+                    <span class="admin-banner-subtitle">Curriculum Ingestion &amp; Question Bank Management</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-admin-passkey" class="form-label">Faculty Access Passkey</label>
+                    <input type="password" id="input-admin-passkey" class="form-input font-mono" placeholder="Enter faculty passkey" autocomplete="current-password">
+                </div>
+
+                <button type="submit" id="btn-admin-login" class="btn btn-primary btn-block btn-lg">
+                    <span class="btn-text">Authenticate as Administrator</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application Layout -->
+    <div class="app-layout" id="app-main-layout" style="display: none;">
+        <!-- Top Institutional Navigation Header -->
+        <header class="app-header">
+            <div class="header-main-row">
+                <div class="header-left">
+                    <div class="brand-badge-row">
+                        <span class="institutional-badge">Official Assessment Portal</span>
+                        <span class="sub-badge">CEPH / CPH Framework</span>
+                    </div>
+                    <h1 class="brand-title">Public Health Competency Assessment &amp; Learning Platform</h1>
+                    <p class="brand-tagline">Integrated Professional Practice &bull; Competency Assessment Portal</p>
+                </div>
+
+                <!-- Center: Segmented Navigation Control -->
+                <nav class="header-center" id="header-nav-tabs" aria-label="Examination Navigation">
+                    <div class="tabs-segmented-control" id="nav-tabs">
+                        <button class="tab-button active" id="tab-btn-practice" data-tab="practice" aria-selected="true" role="tab">
+                            <span class="tab-label">Practice Assessment</span>
+                            <span class="tab-badge" id="practice-count-badge">6 Items</span>
+                        </button>
+                        <button class="tab-button" id="tab-btn-simulation" data-tab="simulation" aria-selected="false" role="tab">
+                            <span class="tab-label">Incident Simulation</span>
+                            <span class="tab-badge alert-badge" id="simulation-stage-badge">Active</span>
+                        </button>
+                        <button class="tab-button" id="tab-btn-dashboard" data-tab="dashboard" aria-selected="false" role="tab">
+                            <span class="tab-label">Performance Analytics</span>
+                            <span class="tab-badge readiness-badge" id="readiness-tab-badge">0% Score</span>
+                        </button>
+                    </div>
+                </nav>
+
+                <!-- Right: Single High-Contrast Countdown Clock Badge -->
+                <div class="header-right">
+                    <div class="timer-pill-display" id="session-timer-badge">
+                        <span id="session-timer-display" class="font-mono">Time Remaining: Paused &bull; 15:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unified High-Contrast Utility Bar -->
+            <div class="header-utility-bar">
+                <div class="utility-left">
+                    <div class="utility-chip candidate-chip" id="candidate-identity-chip">
+                        <span class="chip-label" id="chip-user-label">Candidate:</span>
+                        <span class="chip-val font-semibold" id="header-candidate-name">Alex Johnson</span>
+                        <span class="chip-divider">&bull;</span>
+                        <span class="chip-label" id="chip-id-label">ID:</span>
+                        <span class="chip-val font-mono" id="header-candidate-id">CPH-2026-8841</span>
+                    </div>
+                </div>
+                <div class="utility-right">
+                    <div class="utility-chip session-chip" title="Active Session ID">
+                        <span class="chip-label">Session:</span>
+                        <span class="chip-val font-mono" id="session-id-display">Active</span>
+                    </div>
+                    <div class="utility-chip health-chip" id="system-health-pill" title="System Grounding Status">
+                        <span class="health-status-dot"></span>
+                        <span id="system-health-text">Online &bull; 6 MCQs &bull; 16 Grounded Passages</span>
+                    </div>
+                    <button id="btn-admin-manage" class="btn btn-secondary btn-utility-admin" title="Manage Curriculum and Question Banks" style="display: none;">
+                        <span class="btn-text">Manage Curriculum &amp; Banks</span>
+                    </button>
+                    <button id="btn-app-logout" class="btn btn-secondary btn-utility-logout" title="Log out and return to portal entry">
+                        <span class="btn-text">Log Out</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Real-time Completion Progress Line -->
+            <div class="header-progress-strip">
+                <div class="header-progress-fill" id="header-progress-bar" style="width: 0%;"></div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- Faculty / Administrative Dashboard Console -->
+            <div id="admin-console-view" class="admin-console-container" style="display: none;">
+                <div class="admin-console-header">
+                    <div class="admin-console-badge-row">
+                        <span class="admin-console-badge">FACULTY &amp; ADMINISTRATIVE CONSOLE</span>
+                        <span class="admin-console-status-pill">System Status: Operational</span>
+                    </div>
+                    <h2 class="admin-console-title">Curriculum &amp; Question Bank Management Console</h2>
+                    <p class="admin-console-subtitle">
+                        Ingest authoritative public health literature into the local ChromaDB vector store, update standardized MCQ question banks, and preview assessments.
+                    </p>
+                </div>
+
+                <!-- Live System Telemetry Strip -->
+                <div class="admin-telemetry-grid">
+                    <div class="admin-telemetry-card">
+                        <span class="telemetry-label">GROUNDED PASSAGES</span>
+                        <span class="telemetry-value font-mono" id="admin-stat-passages">16</span>
+                        <span class="telemetry-sub">ChromaDB Vector Store</span>
+                    </div>
+                    <div class="admin-telemetry-card">
+                        <span class="telemetry-label">INDEXED MCQS</span>
+                        <span class="telemetry-value font-mono" id="admin-stat-questions">6</span>
+                        <span class="telemetry-sub">6 Core Competencies</span>
+                    </div>
+                    <div class="admin-telemetry-card">
+                        <span class="telemetry-label">ACTIVE SCENARIOS</span>
+                        <span class="telemetry-value font-mono" id="admin-stat-scenarios">1</span>
+                        <span class="telemetry-sub">Outbreak Investigation</span>
+                    </div>
+                    <div class="admin-telemetry-card">
+                        <span class="telemetry-label">VECTOR STORAGE PATH</span>
+                        <span class="telemetry-value-sm font-mono" id="admin-stat-path">data/chroma</span>
+                        <span class="telemetry-sub">Persistent Local Storage</span>
+                    </div>
+                </div>
+
+                <!-- Dual Ingestion & Banking Section -->
+                <div class="admin-console-grid">
+                    <!-- Card 1: Curriculum Upload -->
+                    <div class="admin-console-card">
+                        <div class="admin-card-header">
+                            <span class="admin-card-badge">KNOWLEDGE RETRIEVAL PIPELINE</span>
+                            <h3 class="admin-card-title">Upload Reference Textbook / Guidelines</h3>
+                            <p class="admin-card-desc">
+                                Ingest authoritative textbooks, WHO guidelines, and CDC incident protocols (.txt, .md, .pdf). Documents are chunked and embedded for dynamic student remediation.
+                            </p>
+                        </div>
+                        <div class="admin-dropzone" id="panel-curriculum-dropzone">
+                            <input type="file" id="panel-input-curriculum-file" accept=".txt,.md,.pdf" class="admin-file-input" />
+                            <div class="dropzone-content">
+                                <span class="dropzone-icon">DOC</span>
+                                <div class="dropzone-text-group">
+                                    <span class="dropzone-primary-text">Drag &amp; drop textbook file here or <span class="dropzone-browse-link">browse</span></span>
+                                    <span class="dropzone-subtext">Supported formats: Plain Text (.txt), Markdown (.md), PDF (.pdf)</span>
+                                </div>
+                            </div>
+                            <div class="dropzone-file-selected" id="panel-curriculum-selected-file" style="display: none;">
+                                <span class="selected-filename font-mono" id="panel-curriculum-filename">filename.txt</span>
+                                <span class="selected-filesize" id="panel-curriculum-filesize">0 KB</span>
+                                <button type="button" class="btn-clear-file" id="btn-clear-panel-curriculum-file" title="Remove selected file">&times;</button>
+                            </div>
+                        </div>
+                        <div class="admin-card-footer">
+                            <button class="btn btn-primary" id="btn-panel-upload-curriculum" disabled>
+                                <span class="btn-text" id="btn-panel-upload-curriculum-text">Index into Knowledge Base</span>
+                            </button>
+                            <div class="admin-upload-status" id="panel-curriculum-upload-status" style="display: none;">
+                                <span class="status-indicator-dot pulse"></span>
+                                <span class="status-msg" id="panel-curriculum-status-text">Embedding and persisting into ChromaDB...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Question Bank Upload -->
+                    <div class="admin-console-card">
+                        <div class="admin-card-header">
+                            <span class="admin-card-badge">ITEM BANKING &amp; SCENARIOS</span>
+                            <h3 class="admin-card-title">Upload / Import Question Bank (.json)</h3>
+                            <p class="admin-card-desc">
+                                Upload and validate a structured QuestionBank JSON payload containing competency items, response choices, rationales, and branching outbreak scenario steps.
+                            </p>
+                        </div>
+                        <div class="admin-dropzone" id="panel-questions-dropzone">
+                            <input type="file" id="panel-input-questions-file" accept=".json" class="admin-file-input" />
+                            <div class="dropzone-content">
+                                <span class="dropzone-icon">JSON</span>
+                                <div class="dropzone-text-group">
+                                    <span class="dropzone-primary-text">Drag &amp; drop question bank JSON here or <span class="dropzone-browse-link">browse</span></span>
+                                    <span class="dropzone-subtext">Supported schema: JSON question bank (.json)</span>
+                                </div>
+                            </div>
+                            <div class="dropzone-file-selected" id="panel-questions-selected-file" style="display: none;">
+                                <span class="selected-filename font-mono" id="panel-questions-filename">bank.json</span>
+                                <span class="selected-filesize" id="panel-questions-filesize">0 KB</span>
+                                <button type="button" class="btn-clear-file" id="btn-clear-panel-questions-file" title="Remove selected file">&times;</button>
+                            </div>
+                        </div>
+                        <div class="admin-card-footer">
+                            <button class="btn btn-primary" id="btn-panel-upload-questions" disabled>
+                                <span class="btn-text" id="btn-panel-upload-questions-text">Import &amp; Validate Bank</span>
+                            </button>
+                            <div class="admin-upload-status" id="panel-questions-upload-status" style="display: none;">
+                                <span class="status-indicator-dot pulse"></span>
+                                <span class="status-msg" id="panel-questions-status-text">Validating schema and reloading bank...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Faculty Quick Action Row -->
+                <div class="admin-quick-actions-bar">
+                    <div class="quick-action-text-group">
+                        <span class="quick-action-title">Faculty Assessment Preview</span>
+                        <span class="quick-action-desc">Launch a live test-run of the candidate examination cockpit and simulation without locking yourself in.</span>
+                    </div>
+                    <div class="quick-action-buttons">
+                        <button id="btn-preview-exam" class="btn btn-secondary">
+                            <span class="btn-text">Preview Assessment (Test Run)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candidate Views Container -->
+            <div id="candidate-views-container">
+                <!-- Faculty Preview Return Banner -->
+                <div class="faculty-preview-banner" id="faculty-preview-banner" style="display: none;">
+                    <span class="preview-banner-text">Faculty Assessment Preview Mode &bull; Test run active</span>
+                    <button class="btn btn-secondary btn-sm" id="btn-return-admin-console">
+                        <span class="btn-text">Return to Admin Console</span>
+                    </button>
+                </div>
+
+                <!-- TAB 1: Core Competencies Practice -->
+                <section id="tab-content-practice" class="tab-content active" aria-labelledby="tab-btn-practice">
+                
+                <!-- 1. Pre-Exam Candidate Briefing Gate (Visible before exam launch) -->
+                <div class="candidate-briefing-gate" id="candidate-briefing-gate">
+                    <div class="briefing-gate-header">
+                        <div class="gate-badge">
+                            OFFICIAL CANDIDATE GATEWAY &bull; STANDARDIZED ASSESSMENT COCKPIT
+                        </div>
+                        <h2 class="gate-title">Public Health Professional Competency Assessment</h2>
+                        <p class="gate-subtitle">Standardized Proctor Briefing, Competency Verification &amp; Timed Assessment Directives</p>
+                    </div>
+
+                    <div class="briefing-instructions-grid">
+                        <div class="instruction-card">
+                            <div class="instruction-content">
+                                <h4>6 Core Competency Domains</h4>
+                                <p>Comprehensive testing across Epidemiology, Biostatistics, Research Methods, Environmental Health, Health Program Management, and Professional Communication.</p>
+                            </div>
+                        </div>
+
+                        <div class="instruction-card">
+                            <div class="instruction-content">
+                                <h4>15:00 Minute Countdown Timer</h4>
+                                <p>Strict standardized time limit. Clock will commence immediately upon launching the examination session and will automatically submit at 00:00.</p>
+                            </div>
+                        </div>
+
+                        <div class="instruction-card">
+                            <div class="instruction-content">
+                                <h4>Cockpit Item Matrix &amp; Flagging</h4>
+                                <p>Single-item viewport with interactive item navigator matrix. Flag complex items to review before final submission.</p>
+                            </div>
+                        </div>
+
+                        <div class="instruction-card">
+                            <div class="instruction-content">
+                                <h4>Curriculum Grounding &amp; Official Audit</h4>
+                                <p>Instant item-by-item methodological rationales, authoritative textbook citations, and cryptographically verified assessment transcripts upon completion.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gate-launch-bar">
+                        <div class="gate-launch-info">
+                            <span>Ensure uninterrupted focus for the duration of this examination session.</span>
+                        </div>
+                        <button class="btn btn-primary btn-lg" id="btn-start-exam">
+                            <span class="btn-text">Launch Examination Session</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Professional Examination Cockpit (Revealed upon Launch) -->
+                <div class="exam-cockpit-container" id="exam-cockpit-container" style="display: none;">
+                    <!-- Review Mode Banner (Visible in Review Mode) -->
+                    <div class="exam-review-banner" id="exam-review-banner" style="display: none;">
+                        <div class="review-banner-left">
+                            <div>
+                                <h4 id="review-banner-title">Examination Completed &bull; Evaluated</h4>
+                                <p id="review-banner-desc">Reviewing all items with step-by-step rationales and textbook citations. Use the Item Navigator to inspect questions.</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-accent btn-sm" id="btn-review-jump-dashboard">
+                            <span>View Performance Dashboard</span>
+                        </button>
+                    </div>
+
+                    <div class="exam-cockpit-grid">
+                        <!-- Left Rail: Question Navigator Matrix (240px wide) -->
+                        <aside class="exam-sidebar-matrix">
+                            <div class="matrix-header">
+                                <span class="matrix-title">QUESTION NAVIGATOR</span>
+                                <span class="matrix-current-indicator" id="matrix-active-indicator">Item 1 of 6</span>
+                            </div>
+
+                            <!-- Matrix Grid of Buttons (Q1 to Q6) -->
+                            <div class="matrix-grid" id="matrix-grid">
+                                <!-- Injected dynamically via JS -->
+                            </div>
+
+                            <!-- Matrix Legend & Quick Stats -->
+                            <div class="matrix-telemetry-box">
+                                <div class="matrix-legend-row">
+                                    <div class="legend-item"><span class="legend-box answered"></span> Answered</div>
+                                    <div class="legend-item"><span class="legend-box unanswered"></span> Incomplete</div>
+                                </div>
+                                <div class="matrix-legend-row">
+                                    <div class="legend-item"><span class="legend-box flagged"></span> Flagged</div>
+                                    <div class="legend-item"><span class="legend-box current"></span> Current Item</div>
+                                </div>
+                                <div class="matrix-stats-row">
+                                    <span id="matrix-answered-stat">Answered: 0 / 6</span>
+                                    <span id="matrix-flagged-stat">Flagged: 0</span>
+                                </div>
+                            </div>
+
+                            <!-- Domain Filter within Exam -->
+                            <div class="matrix-filter-wrap">
+                                <label for="exam-domain-select" class="matrix-filter-label">Jump to Domain:</label>
+                                <select id="exam-domain-select" class="matrix-domain-select">
+                                    <option value="all">All Domains (6 Items)</option>
+                                    <!-- Injected dynamically -->
+                                </select>
+                            </div>
+
+                            <!-- Finish Exam Action Button -->
+                            <div class="matrix-action-wrap">
+                                <button class="btn btn-primary btn-block" id="btn-sidebar-finish-exam">
+                                    <span class="btn-text">Finish &amp; Submit Exam</span>
+                                </button>
+                            </div>
+                        </aside>
+
+                        <!-- Right / Center: Single-Item Viewport Stage -->
+                        <div class="exam-viewport-stage">
+                            <!-- Stage Item Header -->
+                            <div class="stage-item-header">
+                                <div class="stage-item-meta">
+                                    <span class="question-seq-badge" id="exam-item-badge">ITEM 01 OF 06</span>
+                                    <span class="competency-tag" id="exam-pillar-badge">Epidemiology</span>
+                                    <span class="difficulty-pill">BOARD LEVEL</span>
+                                </div>
+                                <button class="btn-flag-toggle" id="btn-flag-item" title="Toggle flag for review">
+                                    <span id="flag-btn-text">Flag for Review</span>
+                                </button>
+                            </div>
+
+                            <!-- Vignette & Question Text -->
+                            <div class="stage-item-body">
+                                <div class="question-prompt" id="exam-question-prompt">
+                                    Loading examination item...
+                                </div>
+
+                                <!-- Standard A, B, C, D Choices Grid -->
+                                <div class="options-grid" id="exam-options-grid">
+                                    <!-- Injected dynamically -->
+                                </div>
+
+                                <!-- Review Feedback Callout (Only in Review Mode) -->
+                                <div class="stage-item-review-feedback" id="stage-item-review-feedback" style="display: none;">
+                                    <!-- Populated in review mode -->
+                                </div>
+                            </div>
+
+                            <!-- Stage Item Footer / Sticky Bottom Dock -->
+                            <div class="stage-item-footer" id="exam-stage-footer">
+                                <div class="footer-left-actions">
+                                    <button class="btn btn-secondary" id="btn-exam-prev" disabled>
+                                        <span class="btn-text" id="btn-exam-prev-text">Previous</span>
+                                    </button>
+                                </div>
+                                <div class="footer-center-actions" id="footer-center-actions">
+                                    <button class="btn btn-secondary btn-flag-dock" id="btn-flag-dock" title="Toggle flag for review">
+                                        <span id="flag-dock-text">Flag for Review</span>
+                                    </button>
+                                    <div class="stage-keyboard-hint" id="stage-keyboard-hint">
+                                        <span>Keyboard: Left / Right Arrow Keys</span>
+                                    </div>
+                                    <div class="stage-review-badge" id="stage-review-position-badge" style="display: none;">
+                                        <span id="stage-review-position-text">Item 1 of 6 (Review Mode)</span>
+                                    </div>
+                                </div>
+                                <div class="footer-right-actions">
+                                    <button class="btn btn-secondary" id="btn-exam-next">
+                                        <span class="btn-text" id="btn-exam-next-text">Next</span>
+                                    </button>
+                                    <button class="btn btn-primary" id="btn-view-dashboard" style="display: none;">
+                                        <span class="btn-text">View Full Performance Analytics &amp; Remediation</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: Outbreak Simulation -->
+            <section id="tab-content-simulation" class="tab-content" aria-labelledby="tab-btn-simulation">
+                <!-- Scenario Briefing Card -->
+                <div class="scenario-briefing-card" id="scenario-briefing-card">
+                    <div class="operational-alert-banner">
+                        <div class="incident-badge">
+                            <span class="incident-pulse"></span>
+                            <span>INCIDENT LEVEL 2 &bull; ACTIVATED</span>
+                        </div>
+                        <span class="alert-level-tag">PROTOCOL: CDC CERC ACTIVE OUTBREAK DIRECTIVE</span>
+                    </div>
+                    <div class="briefing-header">
+                        <h2 class="scenario-title" id="scenario-title">Metropolitan Foodborne Salmonellosis Outbreak</h2>
+                        <div class="setting-tag" id="scenario-setting">
+                            <span id="scenario-setting-text">Regional Health Department Incident Command</span>
+                        </div>
+                    </div>
+                    <div class="briefing-narrative">
+                        <h4 class="narrative-label">OUTBREAK BACKGROUND &amp; CLINICAL CONTEXT</h4>
+                        <p class="narrative-text" id="scenario-background">Loading outbreak scenario briefing narrative...</p>
+                    </div>
+                </div>
+
+                <!-- Simulation Stepper & Stage Cards Container -->
+                <div class="simulation-stages-container" id="simulation-stages-container">
+                    <!-- Stage 1 Card -->
+                    <div class="stage-card active" id="stage-card-1">
+                        <div class="stage-header">
+                            <div class="stage-indicator">
+                                <span class="stage-number">STAGE 1</span>
+                                <span class="stage-status-tag active" id="stage-1-status-tag">In Progress</span>
+                            </div>
+                            <h3 class="stage-title">Immediate Response &amp; Study Formulation</h3>
+                        </div>
+                        <div class="stage-prompt-box">
+                            <p class="stage-prompt-text" id="stage-1-prompt">Loading prompt...</p>
+                        </div>
+                        <div class="stage-choices-list" id="stage-1-choices">
+                            <!-- Injected dynamically -->
+                        </div>
+                        <div class="stage-action-row">
+                            <button class="btn btn-primary" id="btn-commit-stage-1" disabled>
+                                <span class="btn-text">Commit Operational Decision</span>
+                            </button>
+                        </div>
+
+                        <!-- Stage 1 Feedback Card -->
+                        <div class="stage-feedback-card" id="stage-1-feedback" style="display: none;">
+                            <div class="feedback-header">
+                                <span class="score-delta-badge" id="stage-1-delta-badge">+0 pts</span>
+                                <span class="feedback-title">Epidemiological Impact Critique</span>
+                            </div>
+                            <p class="feedback-body" id="stage-1-feedback-text"></p>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 Card -->
+                    <div class="stage-card locked" id="stage-card-2">
+                        <div class="stage-header">
+                            <div class="stage-indicator">
+                                <span class="stage-number">STAGE 2</span>
+                                <span class="stage-status-tag" id="stage-2-status-tag">Locked</span>
+                            </div>
+                            <h3 class="stage-title">Source Containment &amp; Inter-Agency Traceback</h3>
+                        </div>
+                        <div class="stage-prompt-box">
+                            <p class="stage-prompt-text" id="stage-2-prompt">Complete Stage 1 decision to unlock operational directives for Stage 2.</p>
+                        </div>
+                        <div class="stage-choices-list" id="stage-2-choices">
+                            <!-- Injected dynamically -->
+                        </div>
+                        <div class="stage-action-row" id="stage-2-actions" style="display: none;">
+                            <button class="btn btn-primary" id="btn-commit-stage-2" disabled>
+                                <span class="btn-text">Commit Operational Decision</span>
+                            </button>
+                        </div>
+
+                        <!-- Stage 2 Feedback Card -->
+                        <div class="stage-feedback-card" id="stage-2-feedback" style="display: none;">
+                            <div class="feedback-header">
+                                <span class="score-delta-badge" id="stage-2-delta-badge">+0 pts</span>
+                                <span class="feedback-title">Final Outbreak Resolution Critique</span>
+                            </div>
+                            <p class="feedback-body" id="stage-2-feedback-text"></p>
+                        </div>
+                    </div>
+
+                    <!-- Scenario Completion Banner -->
+                    <div class="scenario-complete-banner" id="scenario-complete-banner" style="display: none;">
+                        <div class="banner-content">
+                            <h3>Incident Command Simulation Completed</h3>
+                            <p>You have resolved all operational stages of the outbreak. View your comprehensive readiness evaluation and multi-dimensional metrics on the Performance Dashboard.</p>
+                        </div>
+                        <button class="btn btn-accent" id="btn-view-sim-dashboard">
+                            <span>View Performance Dashboard</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: Performance & Readiness Dashboard -->
+            <section id="tab-content-dashboard" class="tab-content" aria-labelledby="tab-btn-dashboard">
+                <!-- Top Readiness Metric Row -->
+                <div class="dashboard-hero-grid">
+                    <!-- Radial / Meter Score Card -->
+                    <div class="dashboard-card readiness-gauge-card">
+                        <div class="card-header">
+                            <span class="card-category">OVERALL CERTIFICATION READINESS</span>
+                            <span class="card-meta">Weighted: 60% MCQ + 40% Scenario</span>
+                        </div>
+                        <div class="gauge-wrap readiness-gauge">
+                            <div class="radial-progress-container gauge-container">
+                                <svg class="radial-svg" viewBox="0 0 160 160">
+                                    <circle class="radial-bg" cx="80" cy="80" r="68"></circle>
+                                    <circle class="radial-bar" id="radial-score-bar" cx="80" cy="80" r="68"></circle>
+                                </svg>
+                                <div class="radial-score-center gauge-center-text">
+                                    <div class="score-number-row">
+                                        <span class="radial-score-value" id="dash-readiness-score">--</span>
+                                        <span class="radial-score-unit">%</span>
+                                    </div>
+                                    <span class="radial-score-title">Readiness Score</span>
+                                    <span class="radial-status-label" id="dash-readiness-label">Not Evaluated</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="readiness-submetrics">
+                            <div class="submetric-item">
+                                <span class="submetric-label">Objective MCQ Score</span>
+                                <span class="submetric-value" id="dash-objective-score">--%</span>
+                            </div>
+                            <div class="submetric-divider"></div>
+                            <div class="submetric-item">
+                                <span class="submetric-label">Scenario Performance</span>
+                                <span class="submetric-value" id="dash-scenario-score">--%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weak Areas & Remediation Card -->
+                    <div class="dashboard-card weak-areas-card">
+                        <div class="card-header">
+                            <span class="card-category">REMEDIATION DIRECTIVES</span>
+                            <span class="card-meta">Target: Competencies &lt; 60%</span>
+                        </div>
+                        <div class="weak-areas-content" id="weak-areas-content">
+                            <div class="empty-state">
+                                <p>Submit practice questions or complete the outbreak simulation to generate personalized domain remediation priorities.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competency Breakdown Progress Bars -->
+                <div class="dashboard-card competency-breakdown-card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Core Competency Domain Breakdown</h3>
+                            <p class="card-subtitle">Granular accuracy percentages across the 6 accredited public health foundational knowledge areas.</p>
+                        </div>
+                    </div>
+                    <div class="competency-bars-grid" id="competency-bars-container">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading competency analytics...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session Reset & Export Management Bar -->
+                <div class="session-management-bar">
+                    <div class="management-text">
+                        <h4>Institutional Accreditation &amp; Evaluation Record</h4>
+                        <p>Generate a cryptographically validated, institutional-grade assessment transcript for credentialing and board review.</p>
+                    </div>
+                    <div class="management-actions-group">
+                        <button class="btn btn-primary" id="btn-export-record">
+                            <span class="btn-text">Export Official Assessment Record</span>
+                        </button>
+                        <button class="btn btn-secondary" id="btn-reset-session">
+                            <span class="btn-text">Reset / Start New Session</span>
+                        </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <span>Public Health Professional Learning Platform &bull; Aligned with Gordis Epidemiology, Rosner Biostatistics &amp; CDC CERC Guidelines</span>
+                <span class="footer-version">API v1.0.0 &bull; Single-User Local Instance</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Slide-Over Remediation Drawer & Backdrop Overlay -->
+    <div id="drawer-overlay" class="drawer-overlay" style="display: none;"></div>
+    <aside id="remediation-drawer" class="remediation-drawer" aria-hidden="true" role="dialog" aria-labelledby="drawer-domain-title">
+        <div class="drawer-header">
+            <div class="drawer-header-content">
+                <div class="drawer-badge-row">
+                    <span class="drawer-accredited-badge">Local Textbook Grounding</span>
+                    <span class="drawer-pillar-tag" id="drawer-pillar-tag">EPIDEMIOLOGY</span>
+                </div>
+                <h3 class="drawer-title" id="drawer-domain-title">Domain Remediation Review</h3>
+                <p class="drawer-subtitle" id="drawer-domain-subtitle">Authoritative excerpts retrieved from the local curriculum knowledge base.</p>
+            </div>
+            <button class="drawer-close-btn" id="btn-close-drawer" aria-label="Close drawer">&times;</button>
+        </div>
+
+        <div class="drawer-body" id="drawer-body">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Retrieving textbook passages from ChromaDB...</p>
+            </div>
+        </div>
+
+        <div class="drawer-footer">
+            <button class="btn btn-secondary" id="btn-drawer-dismiss">Close Review</button>
+            <button class="btn btn-primary" id="btn-drawer-practice-now">
+                <span class="btn-text">Practice This Domain</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Institutional Assessment Transcript Modal -->
+    <div id="transcript-modal-overlay" class="modal-overlay" style="display: none;">
+        <div class="transcript-modal-wrapper">
+            <!-- Modal Action Toolbar (Hidden during @media print) -->
+            <div class="transcript-toolbar no-print">
+                <div class="toolbar-left">
+                    <span class="toolbar-title">Official Competency Evaluation Transcript</span>
+                    <span class="toolbar-tag">Ready for Archival &amp; PDF Export</span>
+                </div>
+                <div class="toolbar-actions">
+                    <button class="btn btn-primary btn-sm" id="btn-print-transcript">
+                        <span class="btn-text">Print / Save as PDF</span>
+                    </button>
+                    <button class="btn btn-secondary btn-sm" id="btn-close-transcript-modal">
+                        <span class="btn-text">Close</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Formal Transcript Document Container -->
+            <article class="transcript-document" id="transcript-printable-document">
+                <!-- Document Header -->
+                <header class="doc-header">
+                    <div class="doc-header-top">
+                        <div class="doc-inst-details">
+                            <h2 class="doc-inst-name" id="transcript-inst-name">Public Health Competency Assessment &amp; Certification Authority</h2>
+                            <p class="doc-curriculum" id="transcript-curriculum">Foundational CEPH / CPH Public Health Pillars</p>
+                            <p class="doc-type">OFFICIAL CANDIDATE EVALUATION AUDIT TRANSCRIPT</p>
+                        </div>
+                    </div>
+                    <div class="doc-audit-strip">
+                        <div class="audit-item">
+                            <span class="audit-label">CANDIDATE NAME:</span>
+                            <span class="audit-val font-semibold" id="transcript-candidate-name">Alex Johnson</span>
+                        </div>
+                        <div class="audit-item">
+                            <span class="audit-label">CANDIDATE ID:</span>
+                            <span class="audit-val font-mono" id="transcript-candidate-id">CPH-2026-8841</span>
+                        </div>
+                        <div class="audit-item">
+                            <span class="audit-label">SESSION ID:</span>
+                            <span class="audit-val font-mono" id="transcript-session-id">--</span>
+                        </div>
+                        <div class="audit-item">
+                            <span class="audit-label">CERTIFICATE ID:</span>
+                            <span class="audit-val font-mono" id="transcript-cert-id">--</span>
+                        </div>
+                        <div class="audit-item">
+                            <span class="audit-label">ISSUED TIMESTAMP:</span>
+                            <span class="audit-val font-mono" id="transcript-issued-at">--</span>
+                        </div>
+                        <div class="audit-item full-width">
+                            <span class="audit-label">SHA-256 AUDIT HASH:</span>
+                            <span class="audit-val font-mono hash-val" id="transcript-audit-hash">--</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Candidate Performance Summary -->
+                <section class="doc-section">
+                    <h3 class="doc-section-title">I. Executive Candidate Assessment Summary</h3>
+                    <div class="doc-summary-grid">
+                        <div class="summary-metric-card primary">
+                            <span class="metric-title">OVERALL READINESS SCORE</span>
+                            <div class="metric-score-row">
+                                <span class="metric-score-number" id="transcript-overall-score">--</span>
+                                <span class="metric-score-pct">%</span>
+                            </div>
+                            <span class="metric-status-badge" id="transcript-status-badge">NOT EVALUATED</span>
+                        </div>
+                        <div class="summary-metric-card">
+                            <span class="metric-title">OBJECTIVE MCQ SCORE</span>
+                            <span class="metric-val" id="transcript-mcq-score">--%</span>
+                            <span class="metric-sub">Weight: 60% of Overall Score</span>
+                        </div>
+                        <div class="summary-metric-card">
+                            <span class="metric-title">SIMULATION SCORE</span>
+                            <span class="metric-val" id="transcript-scenario-score">--%</span>
+                            <span class="metric-sub">Weight: 40% of Overall Score</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Granular 6-Pillar Breakdown Table -->
+                <section class="doc-section">
+                    <h3 class="doc-section-title">II. Granular Core Competency Domain Performance</h3>
+                    <div class="doc-table-wrap">
+                        <table class="doc-table">
+                            <thead>
+                                <tr>
+                                    <th>Competency Domain</th>
+                                    <th>Pillar ID</th>
+                                    <th>Items Attempted</th>
+                                    <th>Correct</th>
+                                    <th>Accuracy (%)</th>
+                                    <th>Accreditation Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transcript-table-body">
+                                <!-- Injected dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Outbreak Scenario Log Summary -->
+                <section class="doc-section">
+                    <h3 class="doc-section-title">III. Incident Command Simulation Log</h3>
+                    <div class="doc-scenario-summary" id="transcript-scenario-log">
+                        <!-- Injected dynamically -->
+                    </div>
+                </section>
+
+                <!-- Grounded Remediation & Citations -->
+                <section class="doc-section">
+                    <h3 class="doc-section-title">IV. Required Curriculum Remediation &amp; Grounded Citations</h3>
+                    <p class="doc-section-intro">Authoritative references and standard principles retrieved from the local curriculum knowledge base for domains requiring review (&lt; 60%).</p>
+                    <div class="doc-remediation-list" id="transcript-remediation-list">
+                        <!-- Injected dynamically -->
+                    </div>
+                </section>
+
+                <!-- Official Signature & Certification Block -->
+                <footer class="doc-footer">
+                    <div class="doc-signatures-grid">
+                        <div class="sig-block">
+                            <div class="sig-line"></div>
+                            <span class="sig-name">Dr. Margaret Vance, MD, MPH</span>
+                            <span class="sig-title">Chair, Assessment &amp; Credentialing Board</span>
+                        </div>
+                        <div class="sig-block">
+                            <div class="sig-line"></div>
+                            <span class="sig-name">Office of the University Registrar</span>
+                            <span class="sig-title">Department of Public Health Sciences</span>
+                        </div>
+                    </div>
+                    <div class="doc-footer-notice">
+                        This official evaluation audit transcript is cryptographically verified and anchored against the local curriculum vector store. Validated for institutional board review and academic competency tracking.
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </div>
+
+    <!-- Submit Examination Confirmation Modal -->
+    <div id="submit-confirm-modal-overlay" class="modal-overlay" style="display: none;">
+        <div class="submit-confirm-dialog">
+            <div class="dialog-header">
+                <div class="dialog-title-wrap">
+                    <h3 class="dialog-title">Submit Examination Session?</h3>
+                    <p class="dialog-subtitle">Verify your item completion status before finalizing this board assessment.</p>
+                </div>
+            </div>
+            <div class="dialog-body">
+                <div class="dialog-summary-box">
+                    <div class="dialog-stat-item">
+                        <span class="dialog-stat-label">ITEMS ANSWERED</span>
+                        <span class="dialog-stat-val" id="dialog-answered-count">0 / 6</span>
+                    </div>
+                    <div class="dialog-stat-item">
+                        <span class="dialog-stat-label">FLAGGED FOR REVIEW</span>
+                        <span class="dialog-stat-val flagged" id="dialog-flagged-count">0</span>
+                    </div>
+                    <div class="dialog-stat-item">
+                        <span class="dialog-stat-label">TIME REMAINING</span>
+                        <span class="dialog-stat-val font-mono" id="dialog-time-remaining">15:00</span>
+                    </div>
+                </div>
+                <p class="dialog-warning-text" id="dialog-warning-text">
+                    Once you confirm, your responses will be submitted to the evaluation engine and cannot be altered. You will transition to textbook remediation review mode.
+                </p>
+            </div>
+            <div class="dialog-actions">
+                <button class="btn btn-secondary" id="btn-cancel-submit">
+                    <span class="btn-text">Return to Exam</span>
+                </button>
+                <button class="btn btn-primary" id="btn-confirm-submit">
+                    <span class="btn-text">Confirm &amp; Submit Examination</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Administrative Curriculum & Question Bank Management Modal -->
+    <div id="admin-manage-modal" class="modal-overlay" style="display: none;">
+        <div class="admin-modal-wrapper">
+            <div class="admin-modal-header">
+                <div class="admin-header-titles">
+                    <div class="admin-modal-badge">ADMINISTRATIVE PORTAL &bull; CURRICULUM &amp; ITEM BANKING</div>
+                    <h2 class="admin-modal-title">Curriculum &amp; Question Bank Management</h2>
+                    <p class="admin-modal-subtitle">Dynamically ingest new reference literature into the ChromaDB vector store and update board examination question banks.</p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-admin-modal" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <div class="admin-sections-grid">
+                    <!-- Section 1: Upload Reference Textbook / Guidelines -->
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <span class="admin-card-badge">CHROMA KNOWLEDGE BASE</span>
+                            <h3 class="admin-card-title">Upload Reference Textbook / Guidelines</h3>
+                            <p class="admin-card-desc">
+                                Ingest authoritative textbook chapters, WHO standards, or CDC guidance documents (.txt, .md, .pdf). Content will be automatically split into semantic chunks and embedded for textbook remediation.
+                            </p>
+                        </div>
+                        <div class="admin-dropzone" id="curriculum-dropzone">
+                            <input type="file" id="input-curriculum-file" accept=".txt,.md,.pdf" class="admin-file-input" />
+                            <div class="dropzone-content">
+                                <span class="dropzone-icon">DOC</span>
+                                <div class="dropzone-text-group">
+                                    <span class="dropzone-primary-text">Drag &amp; drop textbook file here or <span class="dropzone-browse-link">browse</span></span>
+                                    <span class="dropzone-subtext">Supported: Plain Text (.txt), Markdown (.md), PDF (.pdf)</span>
+                                </div>
+                            </div>
+                            <div class="dropzone-file-selected" id="curriculum-selected-file" style="display: none;">
+                                <span class="selected-filename font-mono" id="curriculum-filename">filename.txt</span>
+                                <span class="selected-filesize" id="curriculum-filesize">0 KB</span>
+                                <button type="button" class="btn-clear-file" id="btn-clear-curriculum-file" title="Remove selected file">&times;</button>
+                            </div>
+                        </div>
+                        <div class="admin-card-footer">
+                            <button class="btn btn-primary" id="btn-upload-curriculum" disabled>
+                                <span class="btn-text" id="btn-upload-curriculum-text">Index into Knowledge Base</span>
+                            </button>
+                            <div class="admin-upload-status" id="curriculum-upload-status" style="display: none;">
+                                <span class="status-indicator-dot pulse"></span>
+                                <span class="status-msg" id="curriculum-status-text">Embedding and persisting into ChromaDB...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Import Question Bank (.json) -->
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <span class="admin-card-badge">ITEM BANKING &amp; SCENARIOS</span>
+                            <h3 class="admin-card-title">Import Question Bank (.json)</h3>
+                            <p class="admin-card-desc">
+                                Upload a standardized QuestionBank JSON payload with core competency items, response choices, rationales, and outbreak branching scenarios. Validates schema before hot-reloading.
+                            </p>
+                        </div>
+                        <div class="admin-dropzone" id="questions-dropzone">
+                            <input type="file" id="input-questions-file" accept=".json" class="admin-file-input" />
+                            <div class="dropzone-content">
+                                <span class="dropzone-icon">JSON</span>
+                                <div class="dropzone-text-group">
+                                    <span class="dropzone-primary-text">Drag &amp; drop question bank JSON here or <span class="dropzone-browse-link">browse</span></span>
+                                    <span class="dropzone-subtext">Supported: JSON schema (.json)</span>
+                                </div>
+                            </div>
+                            <div class="dropzone-file-selected" id="questions-selected-file" style="display: none;">
+                                <span class="selected-filename font-mono" id="questions-filename">bank.json</span>
+                                <span class="selected-filesize" id="questions-filesize">0 KB</span>
+                                <button type="button" class="btn-clear-file" id="btn-clear-questions-file" title="Remove selected file">&times;</button>
+                            </div>
+                        </div>
+                        <div class="admin-card-footer">
+                            <button class="btn btn-primary" id="btn-upload-questions" disabled>
+                                <span class="btn-text" id="btn-upload-questions-text">Import &amp; Validate Bank</span>
+                            </button>
+                            <div class="admin-upload-status" id="questions-upload-status" style="display: none;">
+                                <span class="status-indicator-dot pulse"></span>
+                                <span class="status-msg" id="questions-status-text">Validating schema and reloading bank...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

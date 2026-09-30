@@ -1,0 +1,305 @@
+{
+  "version": "2.0.0",
+  "competencies": [
+    {
+      "id": "epi",
+      "name": "Epidemiology",
+      "description": "Application of epidemiological principles, study designs, surveillance systems, measures of disease frequency and association, and outbreak investigation methodologies to monitor, control, and prevent population health threats."
+    },
+    {
+      "id": "biostat",
+      "name": "Biostatistics",
+      "description": "Application of statistical theory, probability distributions, hypothesis testing, regression modeling, sample size estimation, and data interpretation in biomedical and public health research."
+    },
+    {
+      "id": "research",
+      "name": "Research Methods",
+      "description": "Design, execution, ethics, causal inference frameworks, qualitative/quantitative methodologies, and critical appraisal of evidence in public health investigations."
+    },
+    {
+      "id": "env_health",
+      "name": "Environmental Health",
+      "description": "Identification, assessment, toxicological risk characterization, regulatory standards, and mitigation of chemical, physical, and biological hazards in water, air, soil, and occupational settings."
+    },
+    {
+      "id": "program_mgmt",
+      "name": "Health Program Management",
+      "description": "Strategic planning, logic model development, fiscal allocation, stakeholder engagement, implementation science, and process/outcome evaluation of public health interventions."
+    },
+    {
+      "id": "prof_comm",
+      "name": "Professional Communication",
+      "description": "Crisis and emergency risk communication (CERC), multi-stakeholder advocacy, health literacy adaptation, scientific dissemination, and culturally competent public messaging."
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_epi_02",
+      "competency_id": "epi",
+      "text": "A retrospective cohort study evaluates the association between occupational exposure to silica dust and the 10-year cumulative incidence of chronic obstructive pulmonary disease (COPD). Among 1,200 silica-exposed stone quarry workers, 180 developed COPD during follow-up. Among 2,400 unexposed administrative workers from the same municipal region, 120 developed COPD. What is the Attributable Proportion among the Exposed (Attributable Fraction in the Exposed, AF_e), and what does this metric signify for occupational health policy?",
+      "options": [
+        {
+          "id": "a",
+          "text": "AF_e = 66.7%; Two-thirds of COPD cases among the silica-exposed workers can be directly attributed to their silica exposure and could theoretically be prevented by eliminating this hazard."
+        },
+        {
+          "id": "b",
+          "text": "AF_e = 33.3%; One-third of all COPD cases in the entire municipal population were caused by quarry operations."
+        },
+        {
+          "id": "c",
+          "text": "AF_e = 3.0; Silica-exposed workers have a 3-fold higher incidence rate of COPD compared to unexposed workers."
+        },
+        {
+          "id": "d",
+          "text": "AF_e = 10.0%; The absolute risk difference between exposed and unexposed cohorts is exactly 10 cases per 1,000 person-years."
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "Step 1: Calculate Cumulative Incidence in exposed (CI_e) = 180 / 1,200 = 0.15 (15.0%). Step 2: Calculate Cumulative Incidence in unexposed (CI_u) = 120 / 2,400 = 0.05 (5.0%). Step 3: Calculate Risk Ratio (RR) = CI_e / CI_u = 0.15 / 0.05 = 3.0. Step 4: Calculate Attributable Fraction in Exposed (AF_e) = (RR - 1) / RR = (3.0 - 1) / 3.0 = 2 / 3 = 0.6667 (66.7%), or equivalently (CI_e - CI_u) / CI_e = (0.15 - 0.05) / 0.15 = 0.10 / 0.15 = 66.7%. This indicates that among silica-exposed workers, 66.7% of COPD cases are attributable to silica dust, representing the proportion of illness that would be eliminated if exposure were completely controlled. Option B confuses attributable fraction in the exposed with population attributable fraction. Option C states the Risk Ratio, not the Attributable Fraction. Option D gives the Risk Difference (10%), not the proportional attributable fraction.",
+      "citation": "Celentano, D. D., & Szklo, M. (2018). Gordis Epidemiology (6th ed., pp. 215-224). Elsevier."
+    },
+    {
+      "id": "q_biostat_02",
+      "competency_id": "biostat",
+      "text": "A multivariable logistic regression model is constructed to predict hospital readmission within 30 days among heart failure patients. The estimated coefficient for diabetes mellitus (coded 1 = present, 0 = absent) is beta = 0.693 with a standard error of SE = 0.200, controlling for age, ejection fraction, and baseline creatinine. What is the estimated Adjusted Odds Ratio (aOR) for 30-day readmission associated with diabetes, and what is its approximate 95% confidence interval?",
+      "options": [
+        {
+          "id": "a",
+          "text": "aOR = 0.693; 95% CI: [0.301, 1.085]"
+        },
+        {
+          "id": "b",
+          "text": "aOR = 2.00; 95% CI: [1.35, 2.96]"
+        },
+        {
+          "id": "c",
+          "text": "aOR = 1.48; 95% CI: [0.95, 2.31]"
+        },
+        {
+          "id": "d",
+          "text": "aOR = 3.46; 95% CI: [2.10, 5.72]"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "In logistic regression, the Adjusted Odds Ratio (aOR) is obtained by exponentiating the logistic regression coefficient: aOR = exp(beta) = exp(0.693) = 2.00. The 95% confidence interval for the odds ratio is calculated as exp(beta ± 1.96 * SE). Here, 1.96 * SE = 1.96 * 0.200 = 0.392. Lower bound of log-odds = 0.693 - 0.392 = 0.301; exp(0.301) = 1.351. Upper bound of log-odds = 0.693 + 0.392 = 1.085; exp(1.085) = 2.959. Therefore, the adjusted Odds Ratio is 2.00 (95% CI: 1.35 to 2.96), indicating that heart failure patients with diabetes have 2.0 times the odds of 30-day readmission compared to non-diabetic patients, adjusted for covariates. Option A reports the unexponentiated log-odds coefficient and its linear confidence interval.",
+      "citation": "Rosner, B. (2015). Fundamentals of Biostatistics (8th ed., pp. 580-592). Cengage Learning."
+    },
+    {
+      "id": "q_research_02",
+      "competency_id": "research",
+      "text": "An investigator conducts a 5-year prospective cohort study evaluating the cardiovascular safety of a newly approved oral hypoglycemic agent compared to standard metformin. During follow-up, 28% of patients in the new drug group and 12% in the metformin group were lost to follow-up because they relocated or withdrew consent. If patients who withdrew from the new drug group were disproportionately those who developed early subclinical myocardial infarctions, what specific methodological bias has occurred, and how will it bias the observed relative risk?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Berkson's selection bias; it will bias the observed relative risk away from the null towards extreme harm."
+        },
+        {
+          "id": "b",
+          "text": "Differential loss to follow-up (attrition bias); it will spuriously underestimate the true cardiovascular risk of the new drug (bias toward the null or falsely protective)."
+        },
+        {
+          "id": "c",
+          "text": "Hawthorne effect; it will systematically inflate blood glucose compliance in both study groups."
+        },
+        {
+          "id": "d",
+          "text": "Non-differential misclassification of exposure; it will cause predictable regression dilution toward RR = 1.0."
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "Differential attrition (differential loss to follow-up) occurs when the proportion or reasons for dropout differ between exposure groups in relation to the outcome. If patients on the new drug who experienced subclinical cardiovascular events dropped out before their outcomes could be clinically ascertained, those events are missing from the numerator of the exposed group. This results in an artificially low observed cumulative incidence in the exposed cohort, causing the observed Relative Risk to underestimate the true hazard (biasing the estimate toward the null or making a harmful drug appear safe/protective). Berkson's bias (Option A) occurs specifically in hospital-based case-control studies. Hawthorne effect (Option C) relates to behavioral changes from being observed.",
+      "citation": "Szklo, M., & Nieto, F. J. (2014). Epidemiology: Beyond the Basics (3rd ed., pp. 125-140). Jones & Bartlett Learning."
+    },
+    {
+      "id": "q_env_health_02",
+      "competency_id": "env_health",
+      "text": "Industrial hygiene air sampling inside a commercial solvent vapor degreasing facility measures an 8-hour Time-Weighted Average (TWA) concentration of Trichloroethylene (TCE) of 25.0 ppm. The OSHA Permissible Exposure Limit (PEL) for TCE is an 8-hour TWA of 100 ppm, whereas the ACGIH Threshold Limit Value (TLV) is an 8-hour TWA of 10 ppm with a Short-Term Exposure Limit (STEL) of 25 ppm. Applying the hierarchy of controls, what is the most appropriate environmental health and regulatory action?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Take no action because the measured 25.0 ppm concentration is well below the enforceable federal OSHA PEL of 100 ppm."
+        },
+        {
+          "id": "b",
+          "text": "Immediately mandate that all workers wear N95 particulate filtering respirators while continuing degreasing operations unchanged."
+        },
+        {
+          "id": "c",
+          "text": "Recognize that the concentration exceeds health-based ACGIH TLV standards (10 ppm) and implement primary engineering controls (e.g., substitution with non-chlorinated solvents or local exhaust ventilation) rather than relying solely on administrative limits or PPE."
+        },
+        {
+          "id": "d",
+          "text": "Rotate workers every 2 hours to dilute individual cumulative exposure without modifying ventilation systems."
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "While OSHA PELs represent legally enforceable regulatory ceilings (often established decades ago), ACGIH TLVs represent contemporary peer-reviewed, science-based guidelines for occupational chemical safety. TCE is an IARC Group 1 known human carcinogen (kidney cancer, non-Hodgkin lymphoma). Measuring 25.0 ppm exceeds the ACGIH TLV of 10 ppm by 2.5-fold. Under the NIOSH Hierarchy of Controls, the most effective measures are Elimination/Substitution (replacing TCE with non-chlorinated aqueous degreasers) followed by Engineering Controls (enclosed automated vapor recovery and local exhaust capture). Personal Protective Equipment (PPE) and administrative rotation (Options B & D) are the lowest and least reliable control tiers, and N95 masks filter particulates, offering zero protection against organic vapors like TCE.",
+      "citation": "Friis, R. H. (2018). Essentials of Environmental Health (3rd ed., pp. 180-195). Jones & Bartlett Learning."
+    },
+    {
+      "id": "q_program_mgmt_02",
+      "competency_id": "program_mgmt",
+      "text": "A county public health department designs a 3-year logic model to reduce adolescent electronic cigarette (e-cigarette) initiation across 12 high schools. In the logic model framework, which of the following items represents an 'Intermediate Outcome' rather than an 'Output' or 'Input'?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Allocation of $150,000 from the state tobacco master settlement fund and hiring two certified health educators."
+        },
+        {
+          "id": "b",
+          "text": "Delivery of 48 peer-led anti-vaping curriculum sessions reaching 3,200 enrolled 9th-grade students."
+        },
+        {
+          "id": "c",
+          "text": "A statistically significant 35% decrease in self-reported 30-day e-cigarette use and measurable changes in anti-tobacco social norms among high school students at 24 months post-implementation."
+        },
+        {
+          "id": "d",
+          "text": "Distribution of 5,000 printed informational infographics and launch of a student advisory peer council."
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "In public health program logic models: (1) Inputs are resources invested (e.g., $150k funding, staff hours - Option A); (2) Activities are interventions performed (e.g., conducting classes); (3) Outputs are direct quantifiable deliverables generated by activities (e.g., 48 sessions delivered, 3,200 students reached, 5,000 pamphlets distributed - Options B & D); (4) Short-term Outcomes are immediate changes in knowledge, attitudes, or beliefs; (5) Intermediate Outcomes are changes in target behaviors, policies, or community norms over 1-3 years (e.g., 35% reduction in 30-day vaping prevalence and shifted social norms - Option C); and (6) Impact/Long-term Outcomes are reductions in population-level chronic disease and mortality over 5-10+ years.",
+      "citation": "Issel, L. M., & Wells, R. (2017). Health Program Planning and Evaluation (4th ed., pp. 110-128). Jones & Bartlett Learning."
+    },
+    {
+      "id": "q_prof_comm_02",
+      "competency_id": "prof_comm",
+      "text": "Following a sudden train derailment releasing toxic vinyl chloride monomer vapor near a residential subdivision, the Public Information Officer (PIO) must conduct the first live televised emergency briefing at Hour 2 post-incident. Air monitoring data is preliminary and the exact evacuation perimeter is still being refined. Applying CDC Crisis and Emergency Risk Communication (CERC) principles, what is the most effective communication approach?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Deliver what is currently known about the derailment, state explicitly what is still unknown and what actions responders are taking to verify air safety, provide simple actionable evacuation instructions for residents within the precautionary 1-mile zone, and schedule the exact time of the next update."
+        },
+        {
+          "id": "b",
+          "text": "Reassure residents that vinyl chloride poses negligible health risk at ambient levels to prevent panic and traffic congestion."
+        },
+        {
+          "id": "c",
+          "text": "Postpone all press statements until full gas chromatography-mass spectrometry laboratory air samples are finalized in 48 hours."
+        },
+        {
+          "id": "d",
+          "text": "Instruct residents to check unverified social media channels for real-time neighborhood crowd-sourced evacuation updates."
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "Under the CDC CERC framework, the core tenets for crisis onset are: 'Be First, Be Right, Be Credible, Express Empathy, Promote Action, and Show Respect'. In the acute phase of an environmental chemical disaster: (1) Communicating early prevents an information vacuum that breeds rumor and panic; (2) Acknowledging uncertainty and outlining what authorities are doing to gather facts establishes trust; (3) Giving clear, simple, actionable directives (e.g., 1-mile evacuation or shelter-in-place) protects public health; and (4) Committing to a specific time for subsequent briefings maintains structured communication flow. Providing false reassurance (Option B) destroys institutional credibility, while delaying briefings (Option C) endangers exposed populations.",
+      "citation": "Centers for Disease Control and Prevention. (2014). Crisis and Emergency Risk Communication (CERC) Manual. U.S. Department of Health and Human Services."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "scen_tce_water_02",
+      "title": "Municipal Water Supply Trichloroethylene Contamination",
+      "setting": "Municipal Environmental Health & Public Works Incident Command",
+      "background": "Routine quarterly compliance monitoring under the Safe Drinking Water Act detects elevated levels of Trichloroethylene (TCE) at 48.0 micrograms/L (ppb) in Municipal Well #4, which directly supplies 32,000 residents in the East District. The EPA Maximum Contaminant Level (MCL) for TCE is 5.0 ppb. Historical manufacturing facilities operate 1.5 miles upgradient from the municipal wellfield. The Environmental Health Director activates the emergency response team to characterize the toxicological threat, isolate the source, prevent population exposure, and coordinate inter-agency mitigation.",
+      "stages": [
+        {
+          "stage_id": 1,
+          "prompt": "Quarterly laboratory results confirm 48.0 ppb TCE in Municipal Well #4 (nearly 10 times the EPA MCL of 5.0 ppb). Well #4 contributes 40% of the East District's daily potable water volume. The Public Works Director suggests issuing an immediate 'Boil Water Advisory' to all East District residents while keeping the well operating. As the Lead Environmental Health Officer, how do you evaluate and direct the immediate operational response?",
+          "choices": [
+            {
+              "id": "s1_opt_a",
+              "text": "Immediately reject the boil water advisory (boiling volatile organic compounds like TCE accelerates vapor inhalation and increases indoor toxic exposure); order the immediate mechanical shutdown and physical isolation of Well #4; activate emergency interconnects with the neighboring West District water utility; and issue an emergency 'Do Not Drink / Do Not Inhale Vapor' advisory while mobilizing bulk bottled water distribution points.",
+              "is_optimal": true,
+              "score_delta": 25.0,
+              "feedback": "Outstanding toxicological and operational decision. Boiling water contaminated with volatile organic compounds (VOCs) like TCE drives the chemical into the gas phase, dramatically increasing inhalation exposure and indoor toxic hazard. Shutting down the contaminated well, utilizing emergency inter-system transfers, issuing a precise non-boil advisory, and supplying potable water protects the community."
+            },
+            {
+              "id": "s1_opt_b",
+              "text": "Approve the Boil Water Advisory and instruct residents to boil all cooking and drinking water vigorously for 10 minutes to kill chemical contaminants.",
+              "is_optimal": false,
+              "score_delta": -25.0,
+              "feedback": "Critical toxicological error. Boil water orders are effective only for microbial pathogens (bacteria, parasites, viruses). Boiling water contaminated with volatile organic solvents vaporizes TCE into kitchen air, creating a severe acute inhalation risk."
+            },
+            {
+              "id": "s1_opt_c",
+              "text": "Leave Well #4 operating at full capacity while ordering a second confirmatory test scheduled for next month to avoid causing unnecessary public panic.",
+              "is_optimal": false,
+              "score_delta": -25.0,
+              "feedback": "Unacceptable delay and violation of public health duty. Exposing 32,000 residents to drinking water containing 10x the legal carcinogen limit for 30 additional days causes substantial preventable cumulative exposure."
+            },
+            {
+              "id": "s1_opt_d",
+              "text": "Increase chlorine dosing at the water treatment plant to 5.0 ppm to chemically oxidize and neutralize the dissolved industrial solvents.",
+              "is_optimal": false,
+              "score_delta": -20.0,
+              "feedback": "Ineffective and counterproductive. Standard chlorination does not effectively degrade recalcitrant chlorinated solvents like TCE and may form harmful disinfection byproducts (trihalomethanes)."
+            }
+          ]
+        },
+        {
+          "stage_id": 2,
+          "prompt": "Well #4 is isolated. Hydrogeological monitoring wells confirm an underground groundwater contaminant plume extending westward toward 85 unmetered private residential wells in an unincorporated suburban pocket. State environmental protection officials identify an abandoned metal degreasing facility with leaking underground storage tanks as the probable source. What is your environmental surveillance and mitigation protocol?",
+          "choices": [
+            {
+              "id": "s2_opt_a",
+              "text": "Establish a joint unified command with state EPA and geological survey teams; deploy mobile field sampling teams to test all 85 private residential wells within a 1.5-mile radius for VOCs; provide certified point-of-use granular activated carbon (GAC) filtration systems or alternative potable water to all impacted private households; and initiate sub-slab vapor intrusion screening in homes overlying the shallowest plume contour.",
+              "is_optimal": true,
+              "score_delta": 25.0,
+              "feedback": "Exemplary environmental epidemiology and exposure science. Private wells lack municipal compliance oversight and must be proactively sampled. Supplying certified GAC filtration prevents ongoing ingestion/dermal uptake, and sub-slab vapor intrusion screening addresses the critical indoor vapor inhalation pathway."
+            },
+            {
+              "id": "s2_opt_b",
+              "text": "Advise private well owners that because they reside outside municipal city limits, private groundwater quality is exclusively their individual legal responsibility without municipal testing support.",
+              "is_optimal": false,
+              "score_delta": -20.0,
+              "feedback": "Dereliction of regional public health responsibility. Environmental contaminants do not respect municipal jurisdictional boundaries. Failing to assess high-risk private wells adjacent to a confirmed plume exposes vulnerable residents to toxic exposure."
+            },
+            {
+              "id": "s2_opt_c",
+              "text": "Recommend that residents aerate their private well water in open backyard kiddie pools before using it for household plumbing.",
+              "is_optimal": false,
+              "score_delta": -25.0,
+              "feedback": "Dangerous and unscientific. Open outdoor aeration exposes residents and neighbors to volatilized ambient toxins, promotes microbial contamination, and fails to meet drinking water safety standards."
+            },
+            {
+              "id": "s2_opt_d",
+              "text": "Wait for the private chemical company's insurance adjusters to complete their corporate liability assessment before taking regulatory sampling action.",
+              "is_optimal": false,
+              "score_delta": -25.0,
+              "feedback": "Unacceptable subordination of public safety to corporate litigation timelines. Regulatory agencies must act independently and swiftly to characterize exposure."
+            }
+          ]
+        },
+        {
+          "stage_id": 3,
+          "prompt": "Remediation planning is underway: air stripping towers with granular activated carbon off-gas capture are being installed at Well #4. However, public anxiety is intense. Community groups have organized a televised town hall demanding biological testing (blood/urine TCE testing) for all 32,000 residents and expressing fears of childhood leukemia. How do you lead the public health risk communication and clinical guidance strategy?",
+          "choices": [
+            {
+              "id": "s3_opt_a",
+              "text": "Partner with ATSDR and university environmental toxicologists to conduct a transparent town hall; provide clear, empathic risk communication distinguishing short biological half-lives of TCE in blood/urine (which only reflect exposures in the past 24-48 hours) from long-term epidemiological health registry tracking; establish a dedicated clinical consultation registry with local physicians; and publish daily online water quality testing data with open access.",
+              "is_optimal": true,
+              "score_delta": 25.0,
+              "feedback": "Masterclass in crisis risk communication and toxicological consultation. Explaining the pharmacokinetic limitations of blood testing (very short biological half-life) prevents unhelpful costly lab tests while validating community distress. Establishing long-term health surveillance and publishing transparent daily testing data builds durable institutional trust."
+            },
+            {
+              "id": "s3_opt_b",
+              "text": "Cancel the town hall meeting and issue a press release stating that anyone experiencing anxiety should contact mental health hotlines rather than questioning municipal water quality.",
+              "is_optimal": false,
+              "score_delta": -25.0,
+              "feedback": "Disastrous communication failure. Dismissing legitimate toxicological concerns as purely psychological patronizes the community, destroys credibility, and escalates civil unrest."
+            },
+            {
+              "id": "s3_opt_c",
+              "text": "Agree to draw blood and urine on all 32,000 residents immediately at municipal expense despite knowing TCE metabolizes within hours of well shutdown.",
+              "is_optimal": false,
+              "score_delta": -15.0,
+              "feedback": "Poor utilization of public health resources. Because Well #4 was already shut down, biological testing would yield false negatives for past chronic exposure, misleading residents into a false sense of security while wasting millions in taxpayer funds."
+            },
+            {
+              "id": "s3_opt_d",
+              "text": "Guarantee the community in writing that zero residents will ever develop cancer or adverse health effects as a consequence of the contaminated well water.",
+              "is_optimal": false,
+              "score_delta": -25.0,
+              "feedback": "Severe violation of medical ethics and CERC guidelines. Promising absolute zero risk for an IARC Group 1 carcinogen exposure is scientifically untenable and opens the authority to severe legal and ethical liability."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
