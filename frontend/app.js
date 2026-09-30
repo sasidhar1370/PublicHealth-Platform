@@ -10,9 +10,17 @@
     // -------------------------------------------------------------
     // Configuration & API Endpoints
     // -------------------------------------------------------------
-    const API_BASE = window.location.origin.includes("localhost") || window.location.origin.includes("127.0.0.1")
-        ? `${window.location.origin}/api`
-        : "http://localhost:8000/api";
+    const API_BASE = (function () {
+        if (typeof window !== "undefined" && window.location) {
+            if (window.location.protocol === "file:") {
+                return "http://localhost:8000/api";
+            }
+            if (window.location.origin && window.location.origin.startsWith("http")) {
+                return `${window.location.origin}/api`;
+            }
+        }
+        return "/api";
+    })();
 
     const EXAM_DURATION_SECONDS = 900; // Standard 15:00 minutes countdown
 
