@@ -30,6 +30,8 @@ The **Public Health Competency Assessment & Learning Platform** is an enterprise
 
 ## 2. System Architecture
 
+## 2. System Architecture
+
 ```mermaid
 graph TD
     subgraph UI [User Interface]
