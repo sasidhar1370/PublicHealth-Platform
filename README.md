@@ -31,42 +31,40 @@ The **Public Health Competency Assessment & Learning Platform** is an enterprise
 ## 2. System Architecture
 
 ```mermaid
-flowchart TD
-    subgraph UI ["Client Layer (Vanilla HTML5 / CSS3 / ES6)"]
-        AUTH["Dual-Entry Authentication Gate"]
-        COCKPIT["Candidate Exam Cockpit (Timed & Flagged)"]
-        SIM["Outbreak Incident Simulator"]
-        DASH["Performance Analytics & Score Gauge"]
-        ADMIN["Faculty Curriculum Management Console"]
-        DRAWER["Textbook Remediation Drawer"]
+graph TD
+    subgraph UI [User Interface]
+        AUTH[Dual-Entry Authentication Gate]
+        COCKPIT[Candidate Exam Cockpit]
+        SIM[Outbreak Incident Simulator]
+        DASH[Performance Analytics and Gauge]
+        ADMIN[Faculty Curriculum Console]
+        DRAWER[Textbook Remediation Drawer]
     end
 
-    subgraph API ["Application Server (FastAPI / Python 3.9+)"]
-        ROUTER["REST Endpoints & Validation Schemas"]
-        SCORING["Weighted Evaluation Engine (0.6x MCQ + 0.4x Scenario)"]
-        HASHING["SHA-256 Cryptographic Audit Signer"]
+    subgraph API [FastAPI Application Server]
+        ROUTER[REST Endpoints and Schemas]
+        SCORING[Weighted Evaluation Engine]
+        HASHING[SHA-256 Audit Signer]
     end
 
-    subgraph RAG ["Local Grounding & Retrieval Engine"]
-        EMBED["HuggingFace CPU Embeddings (BAAI/bge-small-en-v1.5)"]
-        VECTOR["ChromaDB Local Vector Storage (data/chroma)"]
-        TEXTBOOKS["Authoritative Literature Corpus (textbooks/)"]
-        BANKS["Standardized Question Banks (data/question_banks/)"]
+    subgraph RAG [Local RAG Engine]
+        EMBED[HuggingFace CPU Embeddings]
+        VECTOR[ChromaDB Vector Store]
+        TEXTBOOKS[Reference Literature Corpus]
+        BANKS[Question Banks]
     end
 
-    AUTH -->|Candidate Entry| COCKPIT
-    AUTH -->|Faculty Entry| ADMIN
+    AUTH --> COCKPIT
+    AUTH --> ADMIN
     COCKPIT --> SIM --> DASH
-    DASH -->|View Weakness| DRAWER
-    DASH -->|Export Accreditation| HASHING
+    DASH --> DRAWER
+    DASH --> HASHING
     DRAWER <--> ROUTER <--> EMBED <--> VECTOR
-    ADMIN -->|Ingest Literature| TEXTBOOKS --> VECTOR
-    ADMIN -->|Upload Bank| BANKS --> ROUTER
-    COCKPIT & SIM --> ROUTER --> SCORING
+    ADMIN --> TEXTBOOKS --> VECTOR
+    ADMIN --> BANKS --> ROUTER
+    COCKPIT --> ROUTER --> SCORING
+    SIM --> ROUTER
 ```
-
----
-
 ## 3. Key Capabilities & Functional Modules
 
 ### A. Dual-Entry Portal with Strict Role Separation
