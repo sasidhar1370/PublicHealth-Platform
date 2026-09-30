@@ -30,40 +30,32 @@ The **Public Health Competency Assessment & Learning Platform** is an enterprise
 
 ## 2. System Architecture
 
-```mermaid
-graph TD
-    subgraph UI [User Interface]
-        AUTH[Dual-Entry Authentication Gate]
-        COCKPIT[Candidate Exam Cockpit]
-        SIM[Outbreak Incident Simulator]
-        DASH[Performance Analytics and Gauge]
-        ADMIN[Faculty Curriculum Console]
-        DRAWER[Textbook Remediation Drawer]
-    end
-
-    subgraph API [FastAPI Application Server]
-        ROUTER[REST Endpoints and Schemas]
-        SCORING[Weighted Evaluation Engine]
-        HASHING[SHA-256 Audit Signer]
-    end
-
-    subgraph RAG [Local RAG Engine]
-        EMBED[HuggingFace CPU Embeddings]
-        VECTOR[ChromaDB Vector Store]
-        TEXTBOOKS[Reference Literature Corpus]
-        BANKS[Question Banks]
-    end
-
-    AUTH --> COCKPIT
-    AUTH --> ADMIN
-    COCKPIT --> SIM --> DASH
-    DASH --> DRAWER
-    DASH --> HASHING
-    DRAWER <--> ROUTER <--> EMBED <--> VECTOR
-    ADMIN --> TEXTBOOKS --> VECTOR
-    ADMIN --> BANKS --> ROUTER
-    COCKPIT --> ROUTER --> SCORING
-    SIM --> ROUTER
+```text
++-------------------------------------------------------------------------------+
+|                                USER INTERFACE                                 |
+|  +-----------------------+  +----------------------+  +--------------------+  |
+|  | Dual-Entry Gate       |  | Candidate Cockpit    |  | Incident Simulator |  |
+|  +-----------------------+  +----------------------+  +--------------------+  |
+|  +-----------------------+  +----------------------+  +--------------------+  |
+|  | Performance Analytics |  | Remediation Drawer   |  | Faculty Console    |  |
+|  +-----------------------+  +----------------------+  +--------------------+  |
++-------------------------------------------------------------------------------+
+                                        │
+                                        ▼
++-------------------------------------------------------------------------------+
+|                           FASTAPI APPLICATION SERVER                          |
+|  +-----------------------+  +----------------------+  +--------------------+  |
+|  | REST Endpoints        |  | Weighted Scoring     |  | SHA-256 Audit Sign |  |
+|  +-----------------------+  +----------------------+  +--------------------+  |
++-------------------------------------------------------------------------------+
+                                        │
+                                        ▼
++-------------------------------------------------------------------------------+
+|                               LOCAL RAG ENGINE                                |
+|  +-----------------------+  +----------------------+  +--------------------+  |
+|  | HuggingFace Embeddings|  | ChromaDB Vector DB   |  | Textbook Corpus    |  |
+|  +-----------------------+  +----------------------+  +--------------------+  |
++-------------------------------------------------------------------------------+
 ```
 ## 3. Key Capabilities & Functional Modules
 
